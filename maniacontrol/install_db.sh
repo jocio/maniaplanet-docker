@@ -1,5 +1,6 @@
 #!/bin/bash
 
+read -e -p "Enter host name: " -i "maniaplanet_mariadb" DATABASE_HOST
 read -e -p "Enter database name: " -i "maniacontrol_db" DATABASE_NAME
 read -e -p "Enter user name: " -i "maniacontrol" USER_NAME
 read -s -p "Enter user password: " USER_PASSWORD
@@ -16,9 +17,9 @@ echo "CREATE USER '${USER_NAME}'@'localhost' IDENTIFIED BY '${USER_PASSWORD}';" 
 echo "GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.*  TO '${USER_NAME}'@'localhost';" >> ${SQL_FILE_NAME}
 
 echo "Executing SQL script as root ..."
-sudo mysql -u root -p < ${SQL_FILE_NAME}
+sudo mysql -h ${DATABASE_HOST} -u root -p < ${SQL_FILE_NAME}
 
-echo "Cleaning up ..."
-rm ${SQL_FILE_NAME}
+# echo "Cleaning up ..."
+# rm ${SQL_FILE_NAME}
 
 echo "Done."
