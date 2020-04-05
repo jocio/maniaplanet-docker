@@ -22,7 +22,7 @@ PASSWORD=dedicated_password
 TITLE=TMStadium@nadeo
 TITLE_PACK_URL=https://v4.live.maniaplanet.com/ingame/public/titles/download/TMStadium@nadeo.Title.Pack.gbx
 TITLE_PACK_FILE=TMStadium@nadeo.Title.Pack.gbx
-MATCH_SETTINGS=MatchSettings/default.txt
+MATCH_SETTINGS=MatchSettings/matchsettings.dedicated_login.txt
 DEDICATED_CFG=config.dedicated_login.txt
 FORCE_IP_PORT=2350
 ```
