@@ -1,0 +1,90 @@
+# docker-compose with the ManiaPlanet Dockerfile for Pim Servers.
+version: "3"
+services:
+    mariadb:
+        container_name: mariadb
+        image: mariadb
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: azerty  # default root => changed on first config mysql_secire_installation
+        volumes:
+            - ./mariadb/data:/var/lib/mysql
+        expose: # visible only by the other containers (not the internet)
+            - 3306 # Not mandatory (because exposed by the image) but more explicit to have the information here
+    
+    pimserver7:
+        container_name: pimserver7
+        # image: pyplanet/maniaplanet-dedicated
+        build: .
+        restart: always
+        env_file: ./dedicated_vars.pimserver7.env
+        volumes:
+            - ./UserData:/dedicated/UserData
+            - ./Logs/pimserver7:/dedicated/Logs
+        expose: # visible only by the other containers (not the internet)
+            - 5007
+        ports: # visible by everyone (especially the internet)
+            - 2357:2357
+            - 2357:2357/udp
+            - 3457:3457
+            - 3457:3457/udp
+
+#    pimserver8:
+#        container_name: pimserver8
+#        # image: pyplanet/maniaplanet-dedicated
+#        build: .
+#        restart: always
+#        env_file: ./dedicated_vars.pimserver8.env
+#        volumes:
+#            - ./UserData:/dedicated/UserData
+#            - ./Logs/pimserver8:/dedicated/Logs
+#        expose: # visible only by the other containers (not the internet)
+#            - 5008
+#        ports: # visible by everyone (especially the internet)
+#            - 2358:2358
+#            - 2358:2358/udp
+#            - 3458:3458
+#            - 3458:3458/udp
+
+    pimserver7_maniacontrol:
+        container_name: pimserver7_maniacontrol
+        # image: jajapengpeng/maniacontrol
+        build: maniacontrol
+        restart: always
+        env_file: ./dedicated_vars.pimserver7.env
+        environment:
+            MANIACONTROL_CONFIG_FILE: server.pimserver7.xml
+        depends_on:
+            - mariadb
+            - pimserver7
+        volumes:
+            - ./maniacontrol/configs:/maniacontrol/configs
+            - ./maniacontrol/plugins:/maniacontrol/plugins
+            - ./maniacontrol/logs/pimserver7:/maniacontrol/logs
+
+#    pimserver7_pyplanet:
+#        container_name: pimserver7_pyplanet
+#        # image: pyplanet/pyplanet
+#        build: pyplanet
+#        restart: always
+#        # links:
+#        #     - pimserver7
+#        #     - mariadb
+#        depends_on:
+#            - pimserver7
+#            - mariadb
+#        volumes:
+#            - ./pyplanet/settings:/app/settings
+#            - ./pyplanet/apps:/app/apps
+
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports: # visible by everyone (especially the internet)
+            - 6080:80
+        depends_on:
+            - mariadb
+        environment:
+            PMA_HOST: mariadb
+            PMA_PORT: 3306
