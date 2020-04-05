@@ -1,8 +1,8 @@
 # docker-compose with the ManiaPlanet Dockerfile for Pim Servers.
 version: "3"
 services:
-    mariadb:
-        container_name: mariadb
+    maniaplanet_mariadb:
+        container_name: maniaplanet_mariadb
         image: mariadb
         restart: always
         environment:
@@ -12,70 +12,61 @@ services:
         expose: # visible only by the other containers (not the internet)
             - 3306 # Not mandatory (because exposed by the image) but more explicit to have the information here
     
-    pimserver7:
-        container_name: pimserver7
-        # image: pyplanet/maniaplanet-dedicated
+    my_server_01:
+        container_name: my_server_01
         build: .
         restart: always
-        env_file: ./dedicated_vars.pimserver7.env
+        env_file: ./dedicated_vars.my_server_01.env
         volumes:
             - ./UserData:/dedicated/UserData
-            - ./Logs/pimserver7:/dedicated/Logs
+            - ./Logs/my_server_01:/dedicated/Logs
         expose: # visible only by the other containers (not the internet)
-            - 5007
+            - 5001
         ports: # visible by everyone (especially the internet)
-            - 2357:2357
-            - 2357:2357/udp
-            - 3457:3457
-            - 3457:3457/udp
+            - 2351:2351
+            - 2351:2351/udp
+            - 3451:3451
+            - 3451:3451/udp
 
-#    pimserver8:
-#        container_name: pimserver8
-#        # image: pyplanet/maniaplanet-dedicated
+#    my_server_02:
+#        container_name: my_server_02
 #        build: .
 #        restart: always
-#        env_file: ./dedicated_vars.pimserver8.env
+#        env_file: ./dedicated_vars.my_server_02.env
 #        volumes:
 #            - ./UserData:/dedicated/UserData
-#            - ./Logs/pimserver8:/dedicated/Logs
+#            - ./Logs/my_server_02:/dedicated/Logs
 #        expose: # visible only by the other containers (not the internet)
-#            - 5008
+#            - 5002
 #        ports: # visible by everyone (especially the internet)
-#            - 2358:2358
-#            - 2358:2358/udp
-#            - 3458:3458
-#            - 3458:3458/udp
+#            - 2352:2352
+#            - 2352:2352/udp
+#            - 3452:3452
+#            - 3452:3452/udp
 
-    pimserver7_maniacontrol:
-        container_name: pimserver7_maniacontrol
-        # image: jajapengpeng/maniacontrol
+    my_server_01_maniacontrol:
+        container_name: my_server_01_maniacontrol
         build: maniacontrol
         restart: always
-        env_file: ./dedicated_vars.pimserver7.env
-        environment:
-            MANIACONTROL_CONFIG_FILE: server.pimserver7.xml
+        env_file: ./dedicated_vars.my_server_01.env
         depends_on:
-            - mariadb
-            - pimserver7
+            - maniaplanet_mariadb
+            - my_server_01
         volumes:
             - ./maniacontrol/configs:/maniacontrol/configs
-            - ./maniacontrol/plugins:/maniacontrol/plugins
-            - ./maniacontrol/logs/pimserver7:/maniacontrol/logs
+            - ./maniacontrol/logs/my_server_01:/maniacontrol/logs
 
-#    pimserver7_pyplanet:
-#        container_name: pimserver7_pyplanet
-#        # image: pyplanet/pyplanet
-#        build: pyplanet
+#    my_server_02_maniacontrol:
+#        container_name: my_server_02_maniacontrol
+#        build: maniacontrol
 #        restart: always
-#        # links:
-#        #     - pimserver7
-#        #     - mariadb
+#        env_file: ./dedicated_vars.my_server_02.env
 #        depends_on:
-#            - pimserver7
-#            - mariadb
+#            - maniaplanet_mariadb
+#            - my_server_02
 #        volumes:
-#            - ./pyplanet/settings:/app/settings
-#            - ./pyplanet/apps:/app/apps
+#            - ./maniacontrol/configs:/maniacontrol/configs
+#            - ./maniacontrol/logs/my_server_02:/maniacontrol/logs
 
     phpmyadmin:
         container_name: phpmyadmin
@@ -84,7 +75,7 @@ services:
         ports: # visible by everyone (especially the internet)
             - 6080:80
         depends_on:
-            - mariadb
+            - maniaplanet_mariadb
         environment:
-            PMA_HOST: mariadb
+            PMA_HOST: maniaplanet_mariadb
             PMA_PORT: 3306
