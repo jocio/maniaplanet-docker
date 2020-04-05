@@ -1,4 +1,4 @@
-# docker-compose with the ManiaPlanet Dockerfile for Pim Servers.
+# docker-compose with the ManiaPlanet Dockerfile for Multiple Servers.
 version: "3"
 services:
     maniaplanet_mariadb:
