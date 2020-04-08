@@ -20,3 +20,9 @@ dedicated_vars.*.env
 ### Maniacontrol
 /maniacontrol/configs
 /maniacontrol/logs
+
+### Perso
+Config
+MatchSettings
+MyMaps
+test.sh
