@@ -12,61 +12,63 @@ services:
         expose: # visible only by the other containers (not the internet)
             - 3306 # Not mandatory (because exposed by the image) but more explicit to have the information here
     
-    my_server_01:
-        container_name: my_server_01
+    maniaplanet_pimserver7:
+        container_name: maniaplanet_pimserver7
         build: .
         restart: always
-        env_file: ./dedicated_vars.my_server_01.env
+        env_file:
+            - dedicated_vars.pimserver7.env
         volumes:
             - ./UserData:/dedicated/UserData
-            - ./Logs/my_server_01:/dedicated/Logs
+            - ./Logs/pimserver7:/dedicated/Logs
         expose: # visible only by the other containers (not the internet)
-            - 5001
+            - 5007
         ports: # visible by everyone (especially the internet)
-            - 2351:2351
-            - 2351:2351/udp
-            - 3451:3451
-            - 3451:3451/udp
+            - 2357:2357
+            - 2357:2357/udp
+            - 3457:3457
+            - 3457:3457/udp
 
-#    my_server_02:
-#        container_name: my_server_02
-#        build: .
-#        restart: always
-#        env_file: ./dedicated_vars.my_server_02.env
-#        volumes:
-#            - ./UserData:/dedicated/UserData
-#            - ./Logs/my_server_02:/dedicated/Logs
-#        expose: # visible only by the other containers (not the internet)
-#            - 5002
-#        ports: # visible by everyone (especially the internet)
-#            - 2352:2352
-#            - 2352:2352/udp
-#            - 3452:3452
-#            - 3452:3452/udp
+    maniaplanet_pimserver8:
+        container_name: maniaplanet_pimserver8
+        build: .
+        restart: always
+        env_file:
+            dedicated_vars.pimserver8.env
+        volumes:
+            - ./UserData:/dedicated/UserData
+            - ./Logs/pimserver8:/dedicated/Logs
+        expose: # visible only by the other containers (not the internet)
+            - 5008
+        ports: # visible by everyone (especially the internet)
+            - 2358:2358
+            - 2358:2358/udp
+            - 3458:3458
+            - 3458:3458/udp
 
-    my_server_01_maniacontrol:
-        container_name: my_server_01_maniacontrol
+    maniaplanet_pimserver7_maniacontrol:
+        container_name: maniaplanet_pimserver7_maniacontrol
         build: maniacontrol
         restart: always
-        env_file: ./dedicated_vars.my_server_01.env
+        env_file: ./dedicated_vars.pimserver7.env
         depends_on:
             - maniaplanet_mariadb
-            - my_server_01
+            - maniaplanet_pimserver7
         volumes:
             - ./maniacontrol/configs:/maniacontrol/configs
-            - ./maniacontrol/logs/my_server_01:/maniacontrol/logs
+            - ./maniacontrol/logs/pimserver7:/maniacontrol/logs
 
-#    my_server_02_maniacontrol:
-#        container_name: my_server_02_maniacontrol
-#        build: maniacontrol
-#        restart: always
-#        env_file: ./dedicated_vars.my_server_02.env
-#        depends_on:
-#            - maniaplanet_mariadb
-#            - my_server_02
-#        volumes:
-#            - ./maniacontrol/configs:/maniacontrol/configs
-#            - ./maniacontrol/logs/my_server_02:/maniacontrol/logs
+    maniaplanet_pimserver8_maniacontrol:
+        container_name: maniaplanet_pimserver8_maniacontrol
+        build: maniacontrol
+        restart: always
+        env_file: ./dedicated_vars.pimserver8.env
+        depends_on:
+            - maniaplanet_mariadb
+            - maniaplanet_pimserver8
+        volumes:
+            - ./maniacontrol/configs:/maniacontrol/configs
+            - ./maniacontrol/logs/pimserver8:/maniacontrol/logs
 
     phpmyadmin:
         container_name: phpmyadmin

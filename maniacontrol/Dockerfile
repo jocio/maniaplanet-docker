@@ -12,16 +12,20 @@ ENV PROJECT_DIR /maniacontrol
 WORKDIR /maniacontrol
 
 # Download dedicated + titles.
-RUN git clone https://github.com/ManiaControl/ManiaControl.git $PROJECT_DIR
+RUN git clone https://github.com/ManiaControl/ManiaControl.git ${PROJECT_DIR}
 
 # Create folder and unpack, cleanup, prepare executables etc.
-RUN mkdir -p $PROJECT_DIR \
-    && rm -rf $PROJECT_DIR/*.bat $PROJECT_DIR/*.exe \
-    && mkdir -p $PROJECT_DIR/configs \
-    && mkdir -p $PROJECT_DIR/logs
+RUN mkdir -p ${PROJECT_DIR} \
+    && rm -rf ${PROJECT_DIR}/*.bat ${PROJECT_DIR}/*.exe \
+    && mkdir -p ${PROJECT_DIR}/configs \
+    && mkdir -p ${PROJECT_DIR}/logs
+
+# Install the dedicated configuration file.
+ADD maniacontrol.config.default.xml ${PROJECT_DIR}/maniacontrol.config.default.xml
+RUN dos2unix ${PROJECT_DIR}/maniacontrol.config.default.xml && chmod 775 ${PROJECT_DIR}/maniacontrol.config.default.xml
 
 # Install run script.
-ADD ManiaControl_multi.sh $PROJECT_DIR/ManiaControl_multi.sh
-RUN dos2unix $PROJECT_DIR/ManiaControl_multi.sh && chmod +x $PROJECT_DIR/ManiaControl_multi.sh && chmod +x $PROJECT_DIR/ManiaControl.php
+ADD ManiaControl_multi.sh ${PROJECT_DIR}/ManiaControl_multi.sh
+RUN dos2unix ${PROJECT_DIR}/ManiaControl_multi.sh && chmod +x ${PROJECT_DIR}/ManiaControl_multi.sh && chmod +x ${PROJECT_DIR}/ManiaControl.php
 
 CMD [ "./ManiaControl_multi.sh" ]

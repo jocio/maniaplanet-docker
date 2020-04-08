@@ -6,11 +6,11 @@
 
 		<!-- Server Connection Details -->
 		<host>#DEDICATED_HOST#</host>
-		<port>#DEDICATED_PORT_5000#</port>
+		<port>#XMLRPC_PORT#</port>
 
 		<!-- XmlRpc Login Details -->
-		<user>#DEDICATED_XMLRPC_SUPERADMIN_USER#</user>
-		<pass>#DEDICATED_XMLRPC_SUPERADMIN_PASSWORD#</pass>
+		<user>SuperAdmin</user>
+		<pass>#SERVER_PASSWORD#</pass>
 
 	</server>
 
