@@ -18,6 +18,7 @@ RUN git clone https://github.com/ManiaControl/ManiaControl.git ${PROJECT_DIR}
 RUN mkdir -p ${PROJECT_DIR} \
     && rm -rf ${PROJECT_DIR}/*.bat ${PROJECT_DIR}/*.exe \
     && mkdir -p ${PROJECT_DIR}/configs \
+    && mkdir -p ${PROJECT_DIR}/plugins \
     && mkdir -p ${PROJECT_DIR}/logs
 
 # Install the dedicated configuration file.
