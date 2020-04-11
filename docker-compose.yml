@@ -54,6 +54,7 @@ services:
             - maniaplanet_server_01
         volumes:
             - ./maniacontrol/configs:/maniacontrol/configs
+            - ./maniacontrol/plugins:/maniacontrol/plugins
             - ./maniacontrol/logs/maniaplanet_server_01:/maniacontrol/logs
 
 #    maniaplanet_server_02_maniacontrol:
@@ -66,6 +67,7 @@ services:
 #            - maniaplanet_server_02
 #        volumes:
 #            - ./maniacontrol/configs:/maniacontrol/configs
+#            - ./maniacontrol/plugins:/maniacontrol/plugins
 #            - ./maniacontrol/logs/maniaplanet_server_02:/maniacontrol/logs
 
     phpmyadmin:
